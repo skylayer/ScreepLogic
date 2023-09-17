@@ -1,4 +1,3 @@
-import * as console from "console";
 import {ErrorMapper} from "utils/ErrorMapper";
 import {roleBuilder} from "./role/builder";
 import {roleHarvester} from "role/harvester";

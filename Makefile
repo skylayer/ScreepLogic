@@ -1,6 +1,6 @@
 all: push
 
-push:
+push: compile
 	git add .
 # commit with date
 	git commit -m "Build on `date +'%Y-%m-%d %H:%M:%S'`"
