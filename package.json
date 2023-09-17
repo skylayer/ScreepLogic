@@ -1,13 +1,13 @@
 {
-  "name": "screeps-typescript-starter",
-  "version": "3.0.0",
+  "name": "screeps-action-runner",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "//": "If you add or change the names of destinations in screeps.json, make sure you update these scripts to reflect the changes",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "build": "rollup -c",
-    "compile": "rollup -c --bundleConfigAsCjs",
+    "compile": "rollup -c --bundleConfigAsCjs"
   },
   "license": "Unlicense",
   "engines": {
