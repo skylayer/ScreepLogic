@@ -41,19 +41,19 @@ export const loop = ErrorMapper.wrapLoop(() => {
     harvester: {
       step: roleHarvester,
       active: 0,
-      body: [WORK, CARRY, MOVE],
+      body: [WORK, CARRY, MOVE, MOVE],
       expected: 10
     },
     builder: {
       step: roleBuilder,
       active: 0,
-      body: [WORK, CARRY, MOVE],
+      body: [WORK, CARRY, MOVE, MOVE],
       expected: 7
     },
     upgrader: {
       step: roleUpgrader,
       active: 0,
-      body: [WORK, CARRY, MOVE],
+      body: [WORK, CARRY, MOVE, MOVE],
       expected: 10
     }
   };
@@ -73,7 +73,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // Trying to generate creep
   for (const name in roleList) {
     const role = roleList[name];
-    Memory.rooms[Game.spawns.Spawn1.room.name].popularity[name] = role.active;
+    // Memory.rooms[Game.spawns.Spawn1.room.name].popularity[name] = role.active;
     if (role.active < role.expected) {
       const newCreepName = `${Game.time}${name}`;
       Game.spawns.Spawn1.spawnCreep(role.body, newCreepName, {
