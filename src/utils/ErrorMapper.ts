@@ -1,5 +1,5 @@
-import {SourceMapConsumer} from "source-map";
 import {escape} from "lodash";
+import {SourceMapConsumer} from "source-map";
 
 export class ErrorMapper {
   // Cache previously mapped traces to improve performance

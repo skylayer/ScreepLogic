@@ -1,6 +1,7 @@
-import {gotoSources} from "../utils/sourceFinder";
+import {gotoSources} from "../../utils/sourceFinder";
+import {RoleConstructor} from "../Role";
 
-export function roleBuilder(creep: Creep) {
+function roleBuilder(creep: Creep) {
   if (creep.memory.building && creep.store[RESOURCE_ENERGY] === 0) {
     creep.memory.building = false;
     creep.say("🔄 harvest");
@@ -27,3 +28,9 @@ export function roleBuilder(creep: Creep) {
     gotoSources(creep);
   }
 }
+
+export const builderConstruct = RoleConstructor('builder', roleBuilder, [WORK, CARRY, MOVE, MOVE],
+  (room: Room) => {
+    return Math.ceil(room.find(FIND_CONSTRUCTION_SITES).length / 3);
+  }
+);
