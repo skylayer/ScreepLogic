@@ -16,7 +16,7 @@ module.exports = function (grunt) {
                     src: ['*.map'],
                     dest: 'dist/',
                     rename: function (dest, src) {
-                        return dest + src.replace('.map', '.map.js');
+                        return dest + src.replace('.js.map', '.map.js');
                     }
                 }]
             }
