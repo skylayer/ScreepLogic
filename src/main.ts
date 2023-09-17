@@ -1,7 +1,7 @@
 import { ErrorMapper } from "utils/ErrorMapper";
+import { roleBuilder } from "./role/builder";
 import { roleHarvester } from "role/harvester";
 import { roleUpgrader } from "role/upgrader";
-import { roleBuilder } from "./role/builder";
 
 declare global {
   /*
@@ -13,24 +13,11 @@ declare global {
     Interfaces matching on name from @types/screeps will be merged. This is how you can extend the 'built-in' interfaces from @types/screeps.
   */
 
-  // Memory extension samples
-  interface Memory {
-    uuid: number;
-    log: any;
-  }
-
   interface CreepMemory {
     role: string;
     upgrading: boolean;
     building: boolean;
     transferring: boolean;
-  }
-
-  // Syntax for adding proprties to `global` (ex "global.log")
-  namespace NodeJS {
-    interface Global {
-      log: any;
-    }
   }
 
   interface roleListTypeDef {

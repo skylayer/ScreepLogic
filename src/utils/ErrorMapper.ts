@@ -3,14 +3,14 @@ import { escape } from "lodash";
 
 export class ErrorMapper {
   // Cache consumer
-  private static _consumer?: SourceMapConsumer;
+  private static consumerTmp?: SourceMapConsumer;
 
   public static get consumer(): SourceMapConsumer {
-    if (this._consumer == null) {
-      this._consumer = new SourceMapConsumer(require("main.js.map"));
+    if (this.consumerTmp == null) {
+      this.consumerTmp = new SourceMapConsumer(require("main.js.map"));
     }
 
-    return this._consumer;
+    return this.consumerTmp;
   }
 
   // Cache previously mapped traces to improve performance
