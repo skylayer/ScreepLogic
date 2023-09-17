@@ -20,6 +20,10 @@ declare global {
     transferring: boolean;
   }
 
+  interface RoomMemory {
+    popularity: { [name: string]: number };
+  }
+
   interface roleListTypeDef {
     [name: string]: {
       step: (creep: Creep) => void;
@@ -69,6 +73,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // Trying to generate creep
   for (const name in roleList) {
     const role = roleList[name];
+    Memory.rooms[Game.spawns.Spawn1.room.name].popularity[name] = role.active;
     if (role.active < role.expected) {
       const newCreepName = `${Game.time}${name}`;
       Game.spawns.Spawn1.spawnCreep(role.body, newCreepName, {
