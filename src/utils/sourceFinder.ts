@@ -29,6 +29,17 @@ export function gotoSources(creep: Creep) {
     return
   }
 
+  const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+  if (source) {
+    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
+      const path = creep.pos.findPathTo(source, {
+        range: 1
+      });
+      creep.moveByPath(path);
+    }
+    return
+  }
+
   const ruin = creep.pos.findClosestByPath(FIND_RUINS, {
     filter: ruin_ => {
       return ruin_.store[RESOURCE_ENERGY] > 0
@@ -37,18 +48,6 @@ export function gotoSources(creep: Creep) {
   if (ruin) {
     if (creep.withdraw(ruin, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       const path = creep.pos.findPathTo(ruin, {
-        range: 1
-      });
-      creep.moveByPath(path);
-    }
-    return
-  }
-
-
-  const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-  if (source) {
-    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-      const path = creep.pos.findPathTo(source, {
         range: 1
       });
       creep.moveByPath(path);
