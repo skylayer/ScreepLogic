@@ -1,7 +1,26 @@
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-screeps');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+
     grunt.initConfig({
+        concat: {
+            options: {
+                banner: 'module.exports = ',
+                footer: ';'
+            },
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['*.map'],
+                    dest: 'dist/',
+                    rename: function (dest, src) {
+                        return dest + src.replace('.map', '.map.js');
+                    }
+                }]
+            }
+        },
         screeps: {
             options: {
                 email: process.env.SCREEPS_EMAIL,       // Use the SCREEPS_EMAIL environment variable
@@ -10,14 +29,14 @@ module.exports = function (grunt) {
                 server: 'main'
             },
             dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: 'dist/',
-                        src: ['*.js'],
-                    }
-                ]
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['*.js'],
+                }]
             }
         }
     });
+
+    grunt.registerTask('default', ['concat', 'screeps']);
 }
