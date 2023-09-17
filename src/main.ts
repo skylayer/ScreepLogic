@@ -35,8 +35,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // Trying to generate creep
   for (const name in RoleList) {
     const role = RoleList[name];
-    if (role.memory.active < role.expected) {
-      console.log(`active=${role.memory.active}, expected=${role.expected}`);
+    if (role.active < role.expected) {
+      console.log(`active=${role.active}, expected=${role.expected}`);
       const newCreepName = `${name}${Game.time}`;
       Game.spawns.Spawn1.spawnCreep(role.body, newCreepName, {
         memory: {
