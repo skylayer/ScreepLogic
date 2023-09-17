@@ -7,10 +7,7 @@
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "build": "rollup -c",
-    "push-main": "rollup -c --environment DEST:main --bundleConfigAsCjs",
-    "push-pserver": "rollup -c --environment DEST:pserver --bundleConfigAsCjs",
-    "push-season": "rollup -c --environment DEST:season --bundleConfigAsCjs",
-    "push-sim": "rollup -c --environment DEST:sim --bundleConfigAsCjs"
+    "compile": "rollup -c --bundleConfigAsCjs",
   },
   "license": "Unlicense",
   "engines": {

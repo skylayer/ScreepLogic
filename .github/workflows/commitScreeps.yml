@@ -22,8 +22,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependency
+    - name: Bundle code into a single file
       run: yarn
 
-    - name: Push to main server
-      run: npm run push-main
+    - name: Build
+      run: npm run compile
+    
+    - name: Commit code to main server
+      run: grunt screeps
