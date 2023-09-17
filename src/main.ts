@@ -1,4 +1,7 @@
 import { ErrorMapper } from "utils/ErrorMapper";
+import { roleHarvester } from "role/harvester";
+import { roleUpgrader } from "role/upgrader";
+import { roleBuilder } from "./role/builder";
 
 declare global {
   /*
@@ -9,6 +12,7 @@ declare global {
     Types added in this `global` block are in an ambient, global context. This is needed because `main.ts` is a module file (uses import or export).
     Interfaces matching on name from @types/screeps will be merged. This is how you can extend the 'built-in' interfaces from @types/screeps.
   */
+
   // Memory extension samples
   interface Memory {
     uuid: number;
@@ -17,8 +21,9 @@ declare global {
 
   interface CreepMemory {
     role: string;
-    room: string;
-    working: boolean;
+    upgrading: boolean;
+    building: boolean;
+    transferring: boolean;
   }
 
   // Syntax for adding proprties to `global` (ex "global.log")
@@ -27,17 +32,79 @@ declare global {
       log: any;
     }
   }
+
+  interface roleListTypeDef {
+    [name: string]: {
+      step: (creep: Creep) => void;
+      active: number;
+      body: BodyPartConstant[];
+      expected: number;
+    };
+  }
 }
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
-  console.log(`Current game tick is ${Game.time}`);
+  const roleList: roleListTypeDef = {
+    harvester: {
+      step: roleHarvester,
+      active: 0,
+      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      expected: 10
+    },
+    builder: {
+      step: roleBuilder,
+      active: 0,
+      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      expected: 7
+    },
+    upgrader: {
+      step: roleUpgrader,
+      active: 0,
+      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      expected: 10
+    }
+  };
+
+  // Automatically assign work to creeps and analysis the num of each role
+  for (const name in Game.creeps) {
+    const creep = Game.creeps[name];
+    for (const role in roleList) {
+      if (creep.memory.role == role) {
+        roleList[role].step(creep);
+        roleList[role].active += 1;
+        break;
+      }
+    }
+  }
+
+  // Trying to generate creep
+  for (const name in roleList) {
+    let role = roleList[name];
+    if (role.active < role.expected) {
+      let newCreepName = `${Game.time}${name}`;
+      Game.spawns["Spawn1"].spawnCreep(role.body, newCreepName, {
+        memory: {
+          role: name,
+          upgrading: false,
+          building: false,
+          transferring: false
+        }
+      });
+      break;
+    }
+  }
 
   // Automatically delete memory of missing creeps
   for (const name in Memory.creeps) {
     if (!(name in Game.creeps)) {
       delete Memory.creeps[name];
     }
+  }
+
+  // Automatically generate pixel
+  if (Game.cpu.bucket >= 10000) {
+    Game.cpu.generatePixel();
   }
 });
