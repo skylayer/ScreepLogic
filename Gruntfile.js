@@ -10,7 +10,13 @@ module.exports = function (grunt) {
                 server: 'main'
             },
             dist: {
-                src: ['dist/*.js', 'dist/*.js.map']
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'dist/',
+                        src: ['*.{js,map}'],
+                    }
+                ]
             }
         }
     });
