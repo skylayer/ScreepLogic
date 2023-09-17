@@ -14,7 +14,7 @@
   },
   "license": "Unlicense",
   "engines": {
-    "node": "10.x || 12.x"
+    "node": "14.x || 16.x"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
