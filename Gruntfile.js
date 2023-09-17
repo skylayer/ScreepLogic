@@ -1,10 +1,6 @@
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-screeps');
-
-    console.log(process.env.SCREEPS_EMAIL);
-    console.log(process.env.SCREEPS_AUTH_TOKEN);
-
     grunt.initConfig({
         screeps: {
             options: {
