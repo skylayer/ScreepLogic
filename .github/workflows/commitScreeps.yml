@@ -26,7 +26,7 @@ jobs:
     
     - name: Commit code to main server
       run: |
-        grunt screeps
+        grunt
       env:
         SCREEPS_EMAIL: ${{ secrets.SCREEPS_EMAIL }}
         SCREEPS_AUTH_TOKEN: ${{ secrets.SCREEPS_AUTH_TOKEN }}
