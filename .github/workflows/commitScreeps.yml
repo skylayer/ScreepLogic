@@ -22,11 +22,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Static Analysis
-      run: npm run lint
-
-    - name: Build
+    - name: Install dependency
       run: |
         npm install yarn
         yarn
-        npm run push-main
+
+    - name: Static code analysis
+      run: npm run lint
+
+    - name: Push to main server
+      run: npm run push-main
