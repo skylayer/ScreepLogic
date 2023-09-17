@@ -1,12 +1,13 @@
 import { SourceMapConsumer } from "source-map";
+import { escape } from "lodash";  // Importing escape function from lodash
 
 export class ErrorMapper {
   // Cache consumer
   private static _consumer?: SourceMapConsumer;
 
-  public static get consumer(): SourceMapConsumer {
+  public static async getConsumer(): Promise<SourceMapConsumer> {
     if (this._consumer == null) {
-      this._consumer = new SourceMapConsumer(require("main.js.map"));
+      this._consumer = await new SourceMapConsumer(require("main.js.map"));
     }
 
     return this._consumer;
@@ -15,16 +16,9 @@ export class ErrorMapper {
   // Cache previously mapped traces to improve performance
   public static cache: { [key: string]: string } = {};
 
-  /**
-   * Generates a stack trace using a source map generate original symbol names.
-   *
-   * WARNING - EXTREMELY high CPU cost for first call after reset - >30 CPU! Use sparingly!
-   * (Consecutive calls after a reset are more reasonable, ~0.1 CPU/ea)
-   *
-   * @param {Error | string} error The error or original stack trace
-   * @returns {string} The source-mapped stack trace
-   */
-  public static sourceMappedStackTrace(error: Error | string): string {
+  public static async sourceMappedStackTrace(error: Error | string): Promise<string> {
+    const consumer = await this.getConsumer();
+
     const stack: string = error instanceof Error ? (error.stack as string) : error;
     if (Object.prototype.hasOwnProperty.call(this.cache, stack)) {
       return this.cache[stack];
@@ -37,7 +31,7 @@ export class ErrorMapper {
 
     while ((match = re.exec(stack))) {
       if (match[2] === "main") {
-        const pos = this.consumer.originalPositionFor({
+        const pos = consumer.originalPositionFor({
           column: parseInt(match[4], 10),
           line: parseInt(match[3], 10)
         });
@@ -69,16 +63,16 @@ export class ErrorMapper {
   }
 
   public static wrapLoop(loop: () => void): () => void {
-    return () => {
+    return async () => {
       try {
         loop();
       } catch (e) {
         if (e instanceof Error) {
           if ("sim" in Game.rooms) {
             const message = `Source maps don't work in the simulator - displaying original error`;
-            console.log(`<span style='color:red'>${message}<br>${_.escape(e.stack)}</span>`);
+            console.log(`<span style='color:red'>${message}<br>${escape(e.stack)}</span>`);
           } else {
-            console.log(`<span style='color:red'>${_.escape(this.sourceMappedStackTrace(e))}</span>`);
+            console.log(`<span style='color:red'>${escape(await this.sourceMappedStackTrace(e))}</span>`);
           }
         } else {
           // can't handle it
