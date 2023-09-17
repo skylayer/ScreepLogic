@@ -1,8 +1,5 @@
 import {ErrorMapper} from "utils/ErrorMapper";
-import {RoleList} from "./creeps/Role";
-import {builderConstruct} from "./creeps/roles/builder";
-import {harvesterConstruct} from "./creeps/roles/harvester";
-import {upgraderConstruct} from "./creeps/roles/upgrader";
+import {RoleList} from "./creeps/RoleList";
 
 declare global {
   interface CreepMemory {
@@ -11,13 +8,6 @@ declare global {
     building: boolean;
     transferring: boolean;
   }
-}
-
-export const requestRole = () => {
-  // Automatically construct role list
-  harvesterConstruct()
-  builderConstruct()
-  upgraderConstruct()
 }
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
