@@ -1,3 +1,4 @@
+all: push
 
 push:
 	git add .
