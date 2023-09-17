@@ -1,7 +1,9 @@
-import { SourceMapConsumer } from "source-map";
-import { escape } from "lodash";
+import {SourceMapConsumer} from "source-map";
+import {escape} from "lodash";
 
 export class ErrorMapper {
+  // Cache previously mapped traces to improve performance
+  public static cache: { [key: string]: string } = {};
   // Cache consumer
   private static consumerTmp?: SourceMapConsumer;
 
@@ -12,9 +14,6 @@ export class ErrorMapper {
 
     return this.consumerTmp;
   }
-
-  // Cache previously mapped traces to improve performance
-  public static cache: { [key: string]: string } = {};
 
   /**
    * Generates a stack trace using a source map generate original symbol names.

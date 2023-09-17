@@ -1,4 +1,4 @@
-import { gotoSources } from "../utils/sourceFinder";
+import {gotoSources} from "../utils/sourceFinder";
 
 export function roleUpgrader(creep: Creep) {
   if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] === 0) {
@@ -13,7 +13,7 @@ export function roleUpgrader(creep: Creep) {
   if (creep.memory.upgrading) {
     if (creep.room.controller) {
       if (creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-        const path = creep.pos.findPathTo(creep.room.controller, { range: 3 });
+        const path = creep.pos.findPathTo(creep.room.controller, {range: 3});
         creep.moveByPath(path);
       }
     }

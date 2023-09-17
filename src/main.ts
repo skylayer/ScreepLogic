@@ -1,19 +1,19 @@
-import { ErrorMapper } from "utils/ErrorMapper";
-import { roleBuilder } from "./role/builder";
-import { roleHarvester } from "role/harvester";
-import { roleUpgrader } from "role/upgrader";
+import * as console from "console";
+import {ErrorMapper} from "utils/ErrorMapper";
+import {roleBuilder} from "./role/builder";
+import {roleHarvester} from "role/harvester";
+import {roleUpgrader} from "role/upgrader";
 import * as lodash from 'lodash';
 
 declare global {
   /*
     Example types, expand on these or remove them and add your own.
-    Note: Values, properties defined here do no fully *exist* by this type definiton alone.
+    Note: Values, properties defined here do no fully *exist* by this type definition alone.
           You must also give them an implemention if you would like to use them. (ex. actually setting a `role` property in a Creeps memory)
 
     Types added in this `global` block are in an ambient, global context. This is needed because `main.ts` is a module file (uses import or export).
     Interfaces matching on name from @types/screeps will be merged. This is how you can extend the 'built-in' interfaces from @types/screeps.
   */
-
 
   interface RolesMemory {
     active: number;
@@ -39,16 +39,18 @@ interface roleListTypeDef {
   [name: string]: Role;
 }
 
+const roleList: roleListTypeDef = {};
+
 class Role {
-  constructor(public name: string, public step: (creep: Creep) => void, public body: BodyPartConstant[], public expected: number = 8) {
+  public constructor(public name: string, public step: (creep: Creep) => void, public body: BodyPartConstant[], public expected: number = 8) {
     // Add the new instance to the roleList
     roleList[this.name] = this;
     console.log(`[Role] ${this.name} is created`);
   }
 
-  get memory() {
+  public get memory() {
     if (!Memory.roles[this.name]) {
-      Memory.roles[this.name] = { active: 0 };
+      Memory.roles[this.name] = {active: 0};
     }
     return Memory.roles[this.name];
   }
@@ -58,8 +60,6 @@ class Role {
 if (!Memory.roles) {
   Memory.roles = {};
 }
-
-const roleList: roleListTypeDef = {};
 
 new Role('harvester', roleHarvester, [WORK, CARRY, MOVE, MOVE], 10);
 new Role('builder', roleBuilder, [WORK, CARRY, MOVE, MOVE], 7);
@@ -90,6 +90,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
   for (const name in roleList) {
     const role = roleList[name];
     if (role.memory.active < role.expected) {
+      console.log(`active=${role.memory.active}, expected=${role.expected}`);
       const newCreepName = `${name}${Game.time}`;
       Game.spawns.Spawn1.spawnCreep(role.body, newCreepName, {
         memory: {
