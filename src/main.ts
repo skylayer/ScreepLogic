@@ -50,19 +50,19 @@ export const loop = ErrorMapper.wrapLoop(() => {
     harvester: {
       step: roleHarvester,
       active: 0,
-      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      body: [WORK, CARRY, MOVE],
       expected: 10
     },
     builder: {
       step: roleBuilder,
       active: 0,
-      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      body: [WORK, CARRY, MOVE],
       expected: 7
     },
     upgrader: {
       step: roleUpgrader,
       active: 0,
-      body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+      body: [WORK, CARRY, MOVE],
       expected: 10
     }
   };
