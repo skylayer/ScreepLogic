@@ -1,5 +1,4 @@
 import {RoleList} from "./RoleList";
-import {upgraderConstruct} from "./roles/upgrader";
 
 type ExpectedCalculator = (room: Room) => number;
 
@@ -17,7 +16,7 @@ export class Role {
   }
 
   public get active() {
-    this.memory.active = 0
+    this.memory.active = Object.keys(this.memory.entities).length
     return this.memory.active
   }
 
