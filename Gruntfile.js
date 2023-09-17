@@ -5,8 +5,8 @@ module.exports = function (grunt) {
     grunt.initConfig({
         screeps: {
             options: {
-                email: '<e-mail>',
-                token: '<auth token>',
+                email: process.env.SCREEPS_EMAIL,       // Use the SCREEPS_EMAIL environment variable
+                token: process.env.SCREEPS_AUTH_TOKEN,  // Use the SCREEPS_AUTH_TOKEN environment variable
                 branch: 'main',
                 server: 'main'
             },
