@@ -25,6 +25,6 @@ function roleUpgrader(creep: Creep) {
 
 export const upgraderConstruct = RoleConstructor('upgrader', roleUpgrader, [WORK, CARRY, MOVE, MOVE],
   () => {
-    return 5;
+    return 8;
   }
 );

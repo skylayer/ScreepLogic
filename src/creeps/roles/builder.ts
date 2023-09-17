@@ -31,6 +31,6 @@ function roleBuilder(creep: Creep) {
 
 export const builderConstruct = RoleConstructor('builder', roleBuilder, [WORK, CARRY, MOVE, MOVE],
   (room: Room) => {
-    return Math.ceil(room.find(FIND_CONSTRUCTION_SITES).length / 3);
+    return Math.ceil(room.find(FIND_CONSTRUCTION_SITES).length);
   }
 );

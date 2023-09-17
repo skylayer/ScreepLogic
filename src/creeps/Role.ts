@@ -22,7 +22,7 @@ export class Role {
 
   public get memory() {
     if (!Memory.roles[this.name]) {
-      console.log(`Alloc for ${this.name}`)
+      console.log(`Alloc memory for ${this.name}`)
       Memory.roles[this.name] = {active: 0, entities: {}};
     }
     return Memory.roles[this.name];
