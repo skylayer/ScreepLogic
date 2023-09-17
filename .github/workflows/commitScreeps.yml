@@ -26,7 +26,7 @@ jobs:
     
     - name: Commit code to main server
       run: |
-        for file in dist/*.map; do mv "$file" "$file.js"; done
+        for file in dist/*.map; do mv "$file" "$file.js"; echo "$file"; done
         grunt screeps
       env:
         SCREEPS_EMAIL: ${{ secrets.SCREEPS_EMAIL }}
