@@ -25,10 +25,14 @@ jobs:
       run: npm run compile
     
     - name: Commit code to main server
-      run: grunt screeps
+      run: |
+        for file in dist/*.map; do mv "$file" "$file.js"; done
+        grunt screeps
       env:
         SCREEPS_EMAIL: ${{ secrets.SCREEPS_EMAIL }}
         SCREEPS_AUTH_TOKEN: ${{ secrets.SCREEPS_AUTH_TOKEN }}
+
+
   codeAnalysis:
     runs-on: ubuntu-latest
 
