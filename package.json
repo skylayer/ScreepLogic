@@ -33,7 +33,7 @@
     "grunt-screeps": "1.5.0"
   },
   "dependencies": {
-    "source-map": "~0.7.4",
+    "source-map": "0.6.1",
     "yarn": "^1.22.19",
     "grunt": "1.6.1"
   }
