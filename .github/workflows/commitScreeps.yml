@@ -29,3 +29,16 @@ jobs:
       env:
         SCREEPS_EMAIL: ${{ secrets.SCREEPS_EMAIL }}
         SCREEPS_AUTH_TOKEN: ${{ secrets.SCREEPS_AUTH_TOKEN }}
+  codeAnalysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+
+    - name: Code Analysis
+      run: npm run lint
