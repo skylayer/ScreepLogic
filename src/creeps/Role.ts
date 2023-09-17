@@ -25,7 +25,7 @@ export class Role {
   }
 
   public get active() {
-    this.memory.active = Object.keys(this.memory.entities).length
+    this.memory.active = 0
     return this.memory.active
   }
 
