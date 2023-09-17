@@ -2,6 +2,7 @@ import { ErrorMapper } from "utils/ErrorMapper";
 import { roleBuilder } from "./role/builder";
 import { roleHarvester } from "role/harvester";
 import { roleUpgrader } from "role/upgrader";
+import * as lodash from 'lodash';
 
 declare global {
   /*
@@ -13,6 +14,15 @@ declare global {
     Interfaces matching on name from @types/screeps will be merged. This is how you can extend the 'built-in' interfaces from @types/screeps.
   */
 
+
+  interface RolesMemory {
+    active: number;
+  }
+
+  interface Memory {
+    roles: { [name: string]: RolesMemory; }
+  }
+
   interface CreepMemory {
     role: string;
     upgrading: boolean;
@@ -20,43 +30,50 @@ declare global {
     transferring: boolean;
   }
 
-  interface RoomMemory {
+  interface SpawnMemory {
     popularity: { [name: string]: number };
   }
+}
 
-  interface roleListTypeDef {
-    [name: string]: {
-      step: (creep: Creep) => void;
-      active: number;
-      body: BodyPartConstant[];
-      expected: number;
-    };
+interface roleListTypeDef {
+  [name: string]: Role;
+}
+
+class Role {
+  constructor(public name: string, public step: (creep: Creep) => void, public body: BodyPartConstant[], public expected: number = 8) {
+    // Add the new instance to the roleList
+    roleList[this.name] = this;
+    console.log(`[Role] ${this.name} is created`);
+  }
+
+  get memory() {
+    if (!Memory.roles[this.name]) {
+      Memory.roles[this.name] = { active: 0 };
+    }
+    return Memory.roles[this.name];
   }
 }
+
+// Ensure roleMemory exists in global Memory
+if (!Memory.roles) {
+  Memory.roles = {};
+}
+
+const roleList: roleListTypeDef = {};
+
+new Role('harvester', roleHarvester, [WORK, CARRY, MOVE, MOVE], 10);
+new Role('builder', roleBuilder, [WORK, CARRY, MOVE, MOVE], 7);
+new Role('upgrader', roleUpgrader, [WORK, CARRY, MOVE, MOVE], 10);
+
+// Calibrate the num of each role
+for (const roleName in roleList) {
+  roleList[roleName].memory.active = lodash.filter(Game.creeps, creep => creep.memory.role === roleName).length;
+}
+
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
-  const roleList: roleListTypeDef = {
-    harvester: {
-      step: roleHarvester,
-      active: 0,
-      body: [WORK, CARRY, MOVE, MOVE],
-      expected: 10
-    },
-    builder: {
-      step: roleBuilder,
-      active: 0,
-      body: [WORK, CARRY, MOVE, MOVE],
-      expected: 7
-    },
-    upgrader: {
-      step: roleUpgrader,
-      active: 0,
-      body: [WORK, CARRY, MOVE, MOVE],
-      expected: 10
-    }
-  };
 
   // Automatically assign work to creeps and analysis the num of each role
   for (const name in Game.creeps) {
@@ -64,7 +81,6 @@ export const loop = ErrorMapper.wrapLoop(() => {
     for (const role in roleList) {
       if (creep.memory.role === role) {
         roleList[role].step(creep);
-        roleList[role].active += 1;
         break;
       }
     }
@@ -73,9 +89,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // Trying to generate creep
   for (const name in roleList) {
     const role = roleList[name];
-    Game.spawns.Spawn1.room.memory.popularity[name] = role.active;
-    if (role.active < role.expected) {
-      const newCreepName = `${Game.time}${name}`;
+    if (role.memory.active < role.expected) {
+      const newCreepName = `${name}${Game.time}`;
       Game.spawns.Spawn1.spawnCreep(role.body, newCreepName, {
         memory: {
           role: name,
