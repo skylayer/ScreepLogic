@@ -1,3 +1,6 @@
+import {upgraderConstruct} from "./roles/upgrader";
+import {requestRole} from "../main";
+
 export const RoleList: { [name: string]: Role } = {};
 type ExpectedCalculator = (room: Room) => number;
 
@@ -52,6 +55,10 @@ export function RoleConstructor(roleName: string, roleFunction: (creep: Creep) =
 if (!Memory.roles) {
   Memory.roles = {};
 }
+
+// Initialize the RoleList
+requestRole();
+
 
 // Calibrate the num of each role
 for (const name in Game.creeps) {

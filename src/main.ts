@@ -13,10 +13,12 @@ declare global {
   }
 }
 
-// Automatically construct role list
-harvesterConstruct()
-builderConstruct()
-upgraderConstruct()
+export const requestRole = () => {
+  // Automatically construct role list
+  harvesterConstruct()
+  builderConstruct()
+  upgraderConstruct()
+}
 
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
