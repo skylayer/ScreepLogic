@@ -1,4 +1,5 @@
 import {RoleList} from "./creeps/RoleList";
+import {controlTowers} from "./towers/towers";
 
 declare global {
   interface CreepMemory {
@@ -48,6 +49,9 @@ export const loop = (() => {
       delete Memory.creeps[name];
     }
   }
+
+  // Control towers
+  controlTowers(Game.spawns.Spawn1.room)
 
   // Automatically generate pixel
   if (Game.cpu.bucket >= 10000) {

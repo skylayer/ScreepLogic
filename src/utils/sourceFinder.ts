@@ -1,57 +1,53 @@
+type ActionFunction<T> = (target: T) => number;
+
+function interactWithTarget<T extends AnyCreep | Resource | Source | Tombstone | Ruin>(
+    creep: Creep,
+    target: T,
+    action: ActionFunction<T>,
+    range: number = 1
+) {
+  const result = action(target);
+  if (result === ERR_NOT_IN_RANGE) {
+    const path = creep.pos.findPathTo(target, {
+      range  // keep a distance of $range from the target
+    });
+    if (path.length > 0) {
+      creep.moveByPath(path);
+    } else {
+      // Handle cases where no path is found or other issues.
+      console.log(`Creep ${creep.name} failed to find a path to target.`);
+    }
+  }
+}
+
 export function gotoSources(creep: Creep) {
   const resource = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-    filter: resource_ => {
-      return resource_.resourceType === RESOURCE_ENERGY
-    }
+    filter: resource_ => resource_.resourceType === RESOURCE_ENERGY
   });
   if (resource) {
-    if (creep.pickup(resource) === ERR_NOT_IN_RANGE) {
-      const path = creep.pos.findPathTo(resource, {
-        range: 1
-      });
-      creep.moveByPath(path);
-    }
-    return
+    interactWithTarget(creep, resource, (res) => creep.pickup(res));
+    return;
   }
 
   const tombstone = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
-    filter: tombstone_ => {
-      return tombstone_.store[RESOURCE_ENERGY] > 0
-    }
-  })
+    filter: tombstone_ => tombstone_.store[RESOURCE_ENERGY] > 0
+  });
   if (tombstone) {
-    if (creep.withdraw(tombstone, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-      const path = creep.pos.findPathTo(tombstone, {
-        range: 1
-      });
-      creep.moveByPath(path);
-    }
-    return
+    interactWithTarget(creep, tombstone, (tomb) => creep.withdraw(tomb, RESOURCE_ENERGY));
+    return;
   }
 
   const source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
   if (source) {
-    if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-      const path = creep.pos.findPathTo(source, {
-        range: 1
-      });
-      creep.moveByPath(path);
-    }
-    return
+    interactWithTarget(creep, source, (src) => creep.harvest(src));
+    return;
   }
 
   const ruin = creep.pos.findClosestByPath(FIND_RUINS, {
-    filter: ruin_ => {
-      return ruin_.store[RESOURCE_ENERGY] > 0
-    }
-  })
+    filter: ruin_ => ruin_.store[RESOURCE_ENERGY] > 0
+  });
   if (ruin) {
-    if (creep.withdraw(ruin, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-      const path = creep.pos.findPathTo(ruin, {
-        range: 1
-      });
-      creep.moveByPath(path);
-    }
-    return
+    interactWithTarget(creep, ruin, (rn) => creep.withdraw(rn, RESOURCE_ENERGY));
+    return;
   }
 }
