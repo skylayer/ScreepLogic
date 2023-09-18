@@ -23,7 +23,7 @@ function roleBuilder(creep: Creep) {
       }
       return;  // Exit early if we found a construction site to work on
     }
-    
+
     // // If no construction sites, try to repair damaged structures
     // const repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
     //   filter: (structure) => structure.hits < structure.hitsMax && structure.structureType !== STRUCTURE_WALL,
