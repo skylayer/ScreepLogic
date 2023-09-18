@@ -15,6 +15,7 @@ declare global {
     roles: { [name: string]: RolesMemory; }
   }
 }
+
 // Ensure roleMemory exists in global Memory
 if (!Memory.roles) {
   Memory.roles = {};
@@ -39,7 +40,13 @@ for (const name in Game.creeps) {
 }
 
 // Calibration result
-for (const name in RoleList) {
-  const role = RoleList[name]
-  console.log(`[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`)
+printStatus()
+
+function printStatus() {
+  for (const name in RoleList) {
+    const role = RoleList[name]
+    console.log(`[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`)
+  }
 }
+
+(global as any).printStatus = printStatus
