@@ -9,21 +9,9 @@ declare global {
   }
 }
 
-// Memory integrity check
-
-
 // When compiling TS to JS and bundling with rollup, the line numbers and file names in error messages change
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = (() => {
-  
-  // Automatically delete memory of missing creeps
-  for (const name in Memory.creeps) {
-    if (!(name in Game.creeps)) {
-      const role = Memory.creeps[name].role
-      delete RoleList[role].memory.entities[name]
-      delete Memory.creeps[name];
-    }
-  }
 
   // Automatically assign work to creeps and analysis the num of each role
   for (const name in Game.creeps) {
@@ -49,6 +37,15 @@ export const loop = (() => {
         }
       });
       break;
+    }
+  }
+
+  // Automatically delete memory of missing creeps
+  for (const name in Memory.creeps) {
+    if (!(name in Game.creeps)) {
+      const role = Memory.creeps[name].role
+      delete RoleList[role].memory.entities[name]
+      delete Memory.creeps[name];
     }
   }
 
