@@ -23,19 +23,19 @@ function roleBuilder(creep: Creep) {
       }
       return;  // Exit early if we found a construction site to work on
     }
-
-    // If no construction sites, try to repair damaged structures
-    const repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-      filter: (structure) => structure.hits < structure.hitsMax && structure.structureType !== STRUCTURE_WALL,
-      algorithm: "dijkstra"
-    });
-    if (repairTarget) {
-      if (creep.repair(repairTarget) === ERR_NOT_IN_RANGE) {
-        const pathRepair = creep.pos.findPathTo(repairTarget, {range: 3});
-        creep.moveByPath(pathRepair);
-      }
-      return;  // Exit early if we found a damaged structure to repair
-    }
+    
+    // // If no construction sites, try to repair damaged structures
+    // const repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+    //   filter: (structure) => structure.hits < structure.hitsMax && structure.structureType !== STRUCTURE_WALL,
+    //   algorithm: "dijkstra"
+    // });
+    // if (repairTarget) {
+    //   if (creep.repair(repairTarget) === ERR_NOT_IN_RANGE) {
+    //     const pathRepair = creep.pos.findPathTo(repairTarget, {range: 3});
+    //     creep.moveByPath(pathRepair);
+    //   }
+    //   return;  // Exit early if we found a damaged structure to repair
+    // }
 
     // If nothing to build or repair, move to idle flag
     const path = creep.pos.findPathTo(Game.flags.idleCreep, {range: 3});
