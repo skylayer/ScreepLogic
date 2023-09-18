@@ -47,6 +47,7 @@ function printStatus() {
     const role = RoleList[name]
     console.log(`[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`)
   }
+  return OK
 }
 
 (global as any).printStatus = printStatus
