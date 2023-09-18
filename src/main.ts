@@ -7,6 +7,7 @@ declare global {
     upgrading: boolean;
     building: boolean;
     transferring: boolean;
+    sourceFinder?: SourceFindMemory
   }
 }
 

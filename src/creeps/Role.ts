@@ -1,7 +1,4 @@
-import {RoleList} from "./RoleList";
-
 type ExpectedCalculator = (room: Room) => number;
-
 
 export class Role {
   public constructor(
