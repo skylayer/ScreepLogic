@@ -30,15 +30,6 @@ function addRole(roles: Role[]) {
   }
 }
 
-// Automatically delete memory of missing creeps
-for (const name in Memory.creeps) {
-  if (!(name in Game.creeps)) {
-    const role = Memory.creeps[name].role
-    delete RoleList[role].memory.entities[name]
-    delete Memory.creeps[name];
-  }
-}
-
 // Initialize the RoleList
 addRole([harvester, upgrader, builder])
 
