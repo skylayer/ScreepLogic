@@ -38,6 +38,6 @@ function roleHarvester(creep: Creep) {
 
 export const harvester = new Role('harvester', roleHarvester, [WORK, CARRY, MOVE, MOVE],
   (room: Room) => {
-    return room.find(FIND_SOURCES).length * 6;
+    return room.find(FIND_SOURCES).length * 4;
   }
 );

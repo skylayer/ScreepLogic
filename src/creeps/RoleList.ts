@@ -35,8 +35,6 @@ addRole([harvester, upgrader, builder])
 // Calibrate the num of each role
 for (const name in Game.creeps) {
   const creep = Game.creeps[name]
-  if (!creep.memory.role)
-    creep.memory = harvester.initMemory
   RoleList[creep.memory.role].memory.entities[name] = creep.id
 }
 
