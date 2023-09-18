@@ -38,11 +38,10 @@ export function gotoSources(creep: Creep) {
           strokeWidth: .15,
           opacity: .1
         },
-        reusePath: 3
+        reusePath: 2
       })
 
       if (moveResult === ERR_NO_PATH) {
-        console.log(`Creep ${creep.name} failed to find a path to target.`);
         return ERR_NO_PATH
       }
     }
@@ -50,6 +49,7 @@ export function gotoSources(creep: Creep) {
   }
 
   function findNewTarget() {
+    console.log(`Creep ${creep.name} tries to find a new target.`);
     const goals: (Resource | Source | Tombstone | Ruin)[] = [].concat(
       // For sources
       creep.room.find(FIND_SOURCES_ACTIVE),
@@ -79,11 +79,12 @@ export function gotoSources(creep: Creep) {
     };
   }
 
-  const source = Game.getObjectById(creep.memory.sourceFinder.targetId);  // 通过ID来获取目标
+  if (!Game.getObjectById(creep.memory.sourceFinder.targetId))
+    creep.memory.sourceFinder.targetId = findNewTarget()
 
-  if (source) {
-    if (extractEnergyFrom(source) === ERR_NO_PATH) {
-      creep.memory.sourceFinder.targetId = findNewTarget()
-    }
+  const source = Game.getObjectById(creep.memory.sourceFinder.targetId) as Resource | Source | Tombstone | Ruin;  // 通过ID来获取目标
+
+  if (extractEnergyFrom(source) === ERR_NO_PATH) {
+    creep.memory.sourceFinder.targetId = findNewTarget()
   }
 }

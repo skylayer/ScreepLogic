@@ -11,7 +11,7 @@ export function controlTowers(room: Room) {
       filter: (structure) => {
         return (structure.structureType === STRUCTURE_ROAD || structure.structureType === STRUCTURE_RAMPART || structure.structureType === STRUCTURE_CONTAINER) &&
           structure.hits < structure.hitsMax &&
-          structure.hits / structure.hitsMax < 0.1;  // or whatever threshold you deem "critical"
+          structure.hits / structure.hitsMax < 2000/1000_000;  // or whatever threshold you deem "critical"
       }
     });
     if (criticalDecayingStructure) {
