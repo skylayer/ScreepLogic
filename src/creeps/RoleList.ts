@@ -1,7 +1,8 @@
+import {add} from "lodash";
 import {Role} from "./Role";
-import {builderConstruct} from "./roles/builder";
-import {harvesterConstruct} from "./roles/harvester";
-import {upgraderConstruct} from "./roles/upgrader";
+import {builder} from "./roles/builder";
+import {harvester} from "./roles/harvester";
+import {upgrader} from "./roles/upgrader";
 
 export const RoleList: { [name: string]: Role } = {};
 
@@ -20,10 +21,17 @@ if (!Memory.roles) {
   Memory.roles = {};
 }
 
+function addRole(roles: Role[]) {
+  // Add the new instance to the roleList
+  for (const id in roles) {
+    const role = roles[id]
+    // Add the new instance to the roleList
+    RoleList[role.name] = role
+  }
+}
+
 // Initialize the RoleList
-harvesterConstruct()
-builderConstruct()
-upgraderConstruct()
+addRole([harvester, upgrader, builder])
 
 // Calibrate the num of each role
 for (const name in Game.creeps) {

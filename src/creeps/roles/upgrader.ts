@@ -1,5 +1,5 @@
 import {gotoSources} from "../../utils/sourceFinder";
-import {RoleConstructor} from "../Role";
+import {Role} from "../Role";
 
 function roleUpgrader(creep: Creep) {
   if (creep.memory.upgrading && creep.store[RESOURCE_ENERGY] === 0) {
@@ -23,7 +23,7 @@ function roleUpgrader(creep: Creep) {
   }
 }
 
-export const upgraderConstruct = RoleConstructor('upgrader', roleUpgrader, [WORK, CARRY, MOVE, MOVE],
+export const upgrader = new Role('upgrader', roleUpgrader, [WORK, CARRY, MOVE, MOVE],
   () => {
     return 8;
   }

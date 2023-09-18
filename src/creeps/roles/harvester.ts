@@ -1,5 +1,5 @@
 import {gotoSources} from "../../utils/sourceFinder";
-import {RoleConstructor} from "../Role";
+import {Role} from "../Role";
 
 function roleHarvester(creep: Creep) {
   if (creep.memory.transferring && creep.store[RESOURCE_ENERGY] === 0) {
@@ -36,7 +36,7 @@ function roleHarvester(creep: Creep) {
   }
 }
 
-export const harvesterConstruct = RoleConstructor('harvester', roleHarvester, [WORK, CARRY, MOVE, MOVE],
+export const harvester = new Role('harvester', roleHarvester, [WORK, CARRY, MOVE, MOVE],
   (room: Room) => {
     return room.find(FIND_SOURCES).length * 3;
   }

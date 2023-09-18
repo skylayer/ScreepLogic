@@ -10,8 +10,6 @@ export class Role {
     public body: BodyPartConstant[],
     private expectedCalculator: ExpectedCalculator
   ) {
-    // Add the new instance to the roleList
-    RoleList[this.name] = this;
     console.log(`[Role] ${this.name} is created`);
   }
 
