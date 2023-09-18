@@ -13,6 +13,15 @@ export class Role {
     console.log(`[Role] ${this.name} is created`);
   }
 
+  public get initMemory(): CreepMemory {
+    return {
+      role: this.name,
+      building: false,
+      transferring: false,
+      upgrading: false
+    }
+  }
+
   public get active() {
     this.memory.active = Object.keys(this.memory.entities).length
     return this.memory.active
