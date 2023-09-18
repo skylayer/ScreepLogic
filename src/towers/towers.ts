@@ -6,6 +6,22 @@ export function controlTowers(room: Room) {
 
   // For each tower, decide what action to take
   for (const tower of towers) {
+    // 3. Heal: Find the closest hurt creep
+    const closestHurtCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+      filter: (creep) => creep.hits < creep.hitsMax
+    });
+    if (closestHurtCreep) {
+      tower.heal(closestHurtCreep);
+      continue;  // Move to next tower
+    }
+
+    // 4. Attack: Find the closest enemy
+    const closestEnemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    if (closestEnemy) {
+      tower.attack(closestEnemy);
+      continue;  // Move to next tower
+    }
+
     // 1. Prioritize repair for decaying structures that are about to break
     const criticalDecayingStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
       filter: (structure) => {
@@ -25,22 +41,6 @@ export function controlTowers(room: Room) {
     });
     if (closestDamagedStructure) {
       tower.repair(closestDamagedStructure);
-      continue;  // Move to next tower
-    }
-
-    // 3. Heal: Find the closest hurt creep
-    const closestHurtCreep = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
-      filter: (creep) => creep.hits < creep.hitsMax
-    });
-    if (closestHurtCreep) {
-      tower.heal(closestHurtCreep);
-      continue;  // Move to next tower
-    }
-
-    // 4. Attack: Find the closest enemy
-    const closestEnemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-    if (closestEnemy) {
-      tower.attack(closestEnemy);
       continue;  // Move to next tower
     }
   }
