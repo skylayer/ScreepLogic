@@ -12,18 +12,34 @@ function roleBuilder(creep: Creep) {
   }
 
   if (creep.memory.building) {
+    // First try to build any construction sites
     const target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES, {
       algorithm: "dijkstra"
     });
     if (target) {
       if (creep.build(target) === ERR_NOT_IN_RANGE) {
-        const path = creep.pos.findPathTo(target, {range: 3});
-        creep.moveByPath(path);
+        const pathBuilding = creep.pos.findPathTo(target, {range: 3});
+        creep.moveByPath(pathBuilding);
       }
-    } else {
-      const path = creep.pos.findPathTo(Game.flags.idleCreep, {range: 3});
-      creep.moveByPath(path);
+      return;  // Exit early if we found a construction site to work on
     }
+
+    // If no construction sites, try to repair damaged structures
+    const repairTarget = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+      filter: (structure) => structure.hits < structure.hitsMax && structure.structureType !== STRUCTURE_WALL,
+      algorithm: "dijkstra"
+    });
+    if (repairTarget) {
+      if (creep.repair(repairTarget) === ERR_NOT_IN_RANGE) {
+        const pathRepair = creep.pos.findPathTo(repairTarget, {range: 3});
+        creep.moveByPath(pathRepair);
+      }
+      return;  // Exit early if we found a damaged structure to repair
+    }
+
+    // If nothing to build or repair, move to idle flag
+    const path = creep.pos.findPathTo(Game.flags.idleCreep, {range: 3});
+    creep.moveByPath(path);
   } else {
     gotoSources(creep);
   }
@@ -31,6 +47,6 @@ function roleBuilder(creep: Creep) {
 
 export const builder = new Role('builder', roleBuilder, [WORK, CARRY, CARRY, MOVE, MOVE],
   (room: Room) => {
-    return 1 + Math.ceil(room.find(FIND_CONSTRUCTION_SITES).length);
+    return 4 + Math.ceil(room.find(FIND_CONSTRUCTION_SITES).length / 4);
   }
 );
