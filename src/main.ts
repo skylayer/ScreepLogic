@@ -20,7 +20,7 @@ export const loop = (() => {
     const creep = Game.creeps[name];
     const role = creep.memory.role
     // Insert creep to roleList
-    RoleList[role].memory.entities[name] = creep
+    RoleList[role].memory.entities[name] = creep.id
     // Step the creep
     RoleList[role].step(creep)
   }

@@ -8,7 +8,7 @@ export const RoleList: { [name: string]: Role } = {};
 declare global {
   interface RolesMemory {
     active: number,
-    entities: { [name: string]: Creep }
+    entities: { [name: string]: Id<Creep> }
   }
 
   interface Memory {
@@ -37,7 +37,7 @@ for (const name in Game.creeps) {
   const creep = Game.creeps[name]
   if (!creep.memory.role)
     creep.memory = harvester.initMemory
-  RoleList[creep.memory.role].memory.entities[name] = creep
+  RoleList[creep.memory.role].memory.entities[name] = creep.id
 }
 
 // Calibration result
