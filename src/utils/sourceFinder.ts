@@ -38,7 +38,7 @@ export function gotoSources(creep: Creep) {
           strokeWidth: .15,
           opacity: .1
         },
-        reusePath: 2
+        reusePath: 5
       })
 
       if (moveResult === ERR_NO_PATH) {
