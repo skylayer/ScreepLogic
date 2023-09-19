@@ -2,7 +2,7 @@ type ActionFunction<T> = (target: T) => number;
 
 declare global {
   interface SourceFindMemory {
-    targetId: Id<Resource | Source | Tombstone | Ruin>
+    targetId?: Id<Resource | Source | Tombstone | Ruin>
   }
 }
 
@@ -14,7 +14,13 @@ export function gotoSources(creep: Creep) {
   ) {
     function getActionForTarget(): ActionFunction<any> {
       if ('store' in target) {
-        return (obj: Tombstone | Ruin) => creep.withdraw(obj, RESOURCE_ENERGY);
+        return (obj: Tombstone | Ruin) => {
+          let ret = creep.withdraw(obj, RESOURCE_ENERGY);
+          if (obj.store[RESOURCE_ENERGY] === 0) {
+            ret = ERR_NOT_ENOUGH_RESOURCES
+          }
+          return ret
+        };
       }
       if ('resourceType' in target) {
         return (res: Resource) => creep.pickup(res);
@@ -26,9 +32,9 @@ export function gotoSources(creep: Creep) {
     }
 
 
-    const action = getActionForTarget();
+    const actionResult = getActionForTarget()(target);
 
-    if (action(target) === ERR_NOT_IN_RANGE) {
+    if (actionResult === ERR_NOT_IN_RANGE) {
       const moveResult = creep.moveTo(target, {
         range,
         visualizePathStyle: {
@@ -44,6 +50,8 @@ export function gotoSources(creep: Creep) {
       if (moveResult === ERR_NO_PATH) {
         return ERR_NO_PATH
       }
+    } else if (actionResult === ERR_NOT_ENOUGH_RESOURCES) {
+      return ERR_NOT_ENOUGH_RESOURCES
     }
     return OK
   }
@@ -74,17 +82,15 @@ export function gotoSources(creep: Creep) {
   }
 
   if (!creep.memory.sourceFinder) {
-    creep.memory.sourceFinder = {
-      targetId: findNewTarget()
-    };
+    creep.memory.sourceFinder = {};
   }
 
-  if (!Game.getObjectById(creep.memory.sourceFinder.targetId))
+  if (!creep.memory.sourceFinder.targetId || !Game.getObjectById(creep.memory.sourceFinder.targetId))
     creep.memory.sourceFinder.targetId = findNewTarget()
 
   const source = Game.getObjectById(creep.memory.sourceFinder.targetId) as Resource | Source | Tombstone | Ruin;  // 通过ID来获取目标
 
-  if (extractEnergyFrom(source) === ERR_NO_PATH) {
+  if (extractEnergyFrom(source) !== OK) {
     creep.memory.sourceFinder.targetId = findNewTarget()
   }
 }
