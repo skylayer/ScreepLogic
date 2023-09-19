@@ -40,14 +40,15 @@ for (const name in Game.creeps) {
 }
 
 // Calibration result
-printStatus()
+console.log(printStatus())
 
 function printStatus() {
+  let ret = ``
   for (const name in RoleList) {
     const role = RoleList[name]
-    console.log(`[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`)
+    ret += `[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`
   }
-  return OK
+  return ret
 }
 
 (global as any).printStatus = printStatus
