@@ -46,7 +46,7 @@ function printStatus() {
   let ret = ``
   for (const name in RoleList) {
     const role = RoleList[name]
-    ret += `[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.`
+    ret += `[Role] ${role.name} has ${role.active} active creeps, ${role.expected} expected.\n`
   }
   return ret
 }
