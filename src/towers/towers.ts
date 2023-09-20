@@ -36,7 +36,8 @@ export function controlTowers(room: Room) {
         lowestHit = struct.hits
       }
     }
-    if (!lowestStructure) {
+
+    if (lowestStructure) {
       tower.repair(lowestStructure)
     }
   }
