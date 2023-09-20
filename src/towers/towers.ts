@@ -37,8 +37,6 @@ export function controlTowers(room: Room) {
       }
     }
 
-    console
-
     if (lowestStructure) {
       tower.repair(lowestStructure)
     }
