@@ -51,4 +51,8 @@ function printStatus() {
   return ret
 }
 
+function findCreep(name: string) {
+  Game.creeps[name].say("I'm here!")
+}
+
 (global as any).printStatus = printStatus
