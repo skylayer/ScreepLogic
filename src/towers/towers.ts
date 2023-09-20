@@ -1,5 +1,3 @@
-import * as console from "console";
-
 export function controlTowers(room: Room) {
   // Find all towers in the room
   const towers = room.find<StructureTower>(FIND_MY_STRUCTURES, {

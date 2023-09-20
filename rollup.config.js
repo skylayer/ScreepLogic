@@ -12,7 +12,7 @@ export default {
     format: "cjs",
     sourcemap: false,
   },
-  external: ["lodash", "console"],
+  external: ["lodash"],
   plugins: [
     clear({ targets: ["dist"] }),
     resolve({ rootDir: "src" }),
