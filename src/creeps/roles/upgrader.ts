@@ -23,7 +23,7 @@ function roleUpgrader(creep: Creep) {
   }
 }
 
-export const upgrader = new Role('upgrader', roleUpgrader, [WORK, CARRY, WORK, CARRY, MOVE, MOVE, MOVE, MOVE],
+export const upgrader = new Role('upgrader', roleUpgrader, [WORK, CARRY, MOVE, WORK, CARRY, MOVE, WORK, CARRY, MOVE, WORK, CARRY, MOVE],
   () => {
     return 4;
   }
