@@ -58,7 +58,7 @@ export function gotoSources(creep: Creep) {
 
   function findNewTarget() {
     console.log(`Creep ${creep.name} tries to find a new target.`);
-    const goals: (Resource | Source | Tombstone | Ruin)[] = [].concat(
+    let goals: (Resource | Source | Tombstone | Ruin)[] = [].concat(
       // For sources
       creep.room.find(FIND_SOURCES_ACTIVE),
       // For dropped resources
@@ -74,6 +74,11 @@ export function gotoSources(creep: Creep) {
         filter: res => res.store[RESOURCE_ENERGY] > 0
       })
     );
+
+    // Failsafe fallback to non-active source
+    if (goals.length === 0) {
+      goals = creep.room.find(FIND_SOURCES)
+    }
 
     const goal = creep.pos.findClosestByPath(goals, {algorithm: 'dijkstra'})
 
